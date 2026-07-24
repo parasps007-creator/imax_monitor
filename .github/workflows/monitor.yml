@@ -1,0 +1,29 @@
+name: IMAX Ticket Monitor
+
+on:
+  schedule:
+    - cron: '*/5 * * * *' # This tells GitHub to run it every 5 minutes
+  workflow_dispatch: # This allows you to manually click a "Run" button to test it
+
+jobs:
+  check-tickets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install playwright requests
+          playwright install chromium
+
+      - name: Run Ticket Checker
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python imax_notifier.py
