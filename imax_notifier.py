@@ -5,7 +5,6 @@ from playwright.async_api import async_playwright
 
 TARGET_URL = "https://whatson.bfi.org.uk/imax/Online/default.asp?BOparam::WScontent::getPage::article_id=49C49C83-6BA0-420C-A784-9B485E36E2E0"
 
-# We use os.environ so GitHub can inject your passwords secretly later!
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
@@ -26,8 +25,9 @@ async def check_ticket():
         page = await context.new_page()
         
         print("Checking BFI for tickets...")
-        await page.goto(TARGET_URL, wait_until="networkidle", timeout=40000)
-        await asyncio.sleep(3)
+        # Use domcontentloaded to prevent networkidle timeout crashes
+        await page.goto(TARGET_URL, wait_until="domcontentloaded", timeout=60000)
+        await asyncio.sleep(5)  # Wait 5 seconds for JS content to render
         
         content = await page.content()
         is_sold_out = "Sold out" in content or "Sold Out" in content
