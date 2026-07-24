@@ -3,7 +3,7 @@ import os
 import requests
 from playwright.async_api import async_playwright
 
-TARGET_URL = "TARGET_URL = "TARGET_URL = "https://whatson.bfi.org.uk/imax/Online/default.asp?BOparam::WScontent::getPage::article_id=49C49C83-6BA0-420C-A784-9B485E36E2E0"
+TARGET_URL = "TARGET_URL = "https://whatson.bfi.org.uk/imax/Online/default.asp?BOparam::WScontent::getPage::article_id=49C49C83-6BA0-420C-A784-9B485E36E2E0"
 
 # We use os.environ so GitHub can inject your passwords secretly later!
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
