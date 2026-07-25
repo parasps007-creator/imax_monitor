@@ -2,7 +2,7 @@ name: IMAX Ticket Monitor
 
 on:
   schedule:
-    - cron: '*/5 * * * *' # This tells GitHub to run it every 5 minutes
+    - cron: '*/2 * * * *' # This tells GitHub to run it every 5 minutes
   workflow_dispatch: # This allows you to manually click a "Run" button to test it
 
 jobs:
