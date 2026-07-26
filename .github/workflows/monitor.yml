@@ -1,19 +1,19 @@
-name: IMAX Ticket Monitor
+name: IMAX & Science Museum Ticket Monitor
 
 on:
   schedule:
-    - cron: '*/2 * * * *' # This tells GitHub to run it every 5 minutes
-  workflow_dispatch: # This allows you to manually click a "Run" button to test it
+    - cron: '0 */2 * * *'
+  workflow_dispatch:
 
 jobs:
   check-tickets:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
@@ -22,8 +22,14 @@ jobs:
           pip install playwright requests
           playwright install chromium
 
-      - name: Run Ticket Checker
+      - name: Run BFI Ticket Checker
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python imax_notifier.py
+
+      - name: Run Science Museum Ticket Checker
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python science_museum_notifier.py
